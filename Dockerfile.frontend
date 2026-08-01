@@ -1,0 +1,10 @@
+FROM nginx:alpine
+
+# Копируем наш HTML файл в директорию статики nginx
+# Убедись, что frontend/index.html существует
+COPY frontend/index.html /usr/share/nginx/html/index.html
+
+# Копируем конфиг nginx, чтобы настроить прокси
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80

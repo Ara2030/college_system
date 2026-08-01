@@ -3,11 +3,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Поддержка PostgreSQL (Production) или SQLite (Development)
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./college_is.db")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Если используете SQLite, уберем префикс для SQLAlchemy engine creation в разных версиях
-# Но для простоты оставим как есть, SQLAlchemy сам разберется
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL не установлен! Проверь docker-compose.yml")
+
+# Для SQLite (если хочется локально без докера, закомментируй блок выше и раскомментируй строку ниже)
+# DATABASE_URL = "sqlite:///./college_is.db"
+
 if DATABASE_URL.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
 else:

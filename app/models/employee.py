@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.orm import relationship
 from app.models.base import Base
 
@@ -8,13 +8,14 @@ class Employee(Base):
     id = Column(Integer, primary_key=True, index=True)
     full_name = Column(String(150), nullable=False)
     position = Column(String(100))
-
-    #Добавлено поле для привязки к отделению (если нужно)
-    department_id = Column(Integer, ForeignKey("departments.id"))
-
+    # department - это просто строка (например, "Учебная часть"), 
+    # так как в модели Department нет ссылок на сотрудников
+    department = Column(String(100)) 
     phone = Column(String(20))
     email = Column(String(100))
     employment_date = Column(Date)
 
-    workload = relationship("Workload", back_populates="employee")
-    department = relationship("Department", back_populates="employees")
+    # Если нужно, чтобы у сотрудника были нагрузки (workload), можно оставить эту связь,
+    # но модель Workload должна существовать. 
+    # Для простоты диплома пока закомментируем или убедись, что модель Workload есть.
+    # workload = relationship("Workload", back_populates="employee")

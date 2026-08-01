@@ -1,0 +1,26 @@
+# Используем официальный легкий образ Python
+FROM python:3.11-slim
+
+# Устанавливаем системные зависимости, если они нужны для psycopg2 (в slim-образе обычно уже есть, но на всякий случай можно добавить gcc и libc-dev, если будут ошибки сборки, хотя psycopg2-binary обычно уже бинарник)
+# RUN apt-get update && apt-get install -y gcc libpq-dev
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# 1. Копируем только файл зависимостей
+COPY requirements.txt .
+
+# 2. Устанавливаем зависимости
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 3. Копируем остальной код приложения
+COPY app/ ./app/
+
+# Переменные окружения
+ENV PYTHONUNBUFFERED=1
+
+# Порт
+EXPOSE 8000
+
+# Команда запуска
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

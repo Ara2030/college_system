@@ -1,7 +1,7 @@
 from .base import Base
 
 # Явно импортируем все модели
-from .department import Department
+# from .department import Department
 from .group import Group
 from .student import Student, StudentStatus
 from .employee import Employee
